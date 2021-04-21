@@ -5,10 +5,10 @@ const { BN, expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
 
 contract('WasderToken - BurnableToken', function(accounts) {
 
-    const [ owner, mintToAccount, ...otherAccounts ] = accounts;
+    const [ owner, newOwner, burner, mintToAccount, ...otherAccounts ] = accounts;
 
     const decimals_string_18dec = "000000000000000000";
-    const tokensToBurn = "100"+decimals_string_18dec;
+    const tokensToBurn = "100" + decimals_string_18dec;
 
     beforeEach(async function () {
         this.token = await WasderToken.new();
@@ -17,8 +17,26 @@ contract('WasderToken - BurnableToken', function(accounts) {
     
     describe('WasderToken - burn', function () {
 
-        it('it is possible to burn token if is burner role', async function () {
+        it('manage admin and burner role', async function () {
+ 
+            const DEFAULT_ADMIN_ROLE = await this.token.DEFAULT_ADMIN_ROLE.call();
+            // console.log(await this.token.hasRole(DEFAULT_ADMIN_ROLE, owner));
+            // console.log(await this.token.hasRole(DEFAULT_ADMIN_ROLE, newOwner));
+            assert.equal(await this.token.hasRole(DEFAULT_ADMIN_ROLE, owner), true);
+            assert.equal(await this.token.hasRole(DEFAULT_ADMIN_ROLE, newOwner), false);
+ 
+            grantAdmin_logs = await this.token.grantRole(DEFAULT_ADMIN_ROLE, newOwner, { from: owner });
+            revokeAdmin_logs = await this.token.revokeRole(DEFAULT_ADMIN_ROLE, owner, { from: owner });
 
+            // console.log(await this.token.hasRole(DEFAULT_ADMIN_ROLE, owner));
+            // console.log(await this.token.hasRole(DEFAULT_ADMIN_ROLE, newOwner));
+            assert.equal(await this.token.hasRole(DEFAULT_ADMIN_ROLE, owner), false);
+            assert.equal(await this.token.hasRole(DEFAULT_ADMIN_ROLE, newOwner), true);
+ 
+        });
+
+        it('it is possible to burn token if is burner role', async function () {
+ 
             // set owner as burner
             // total supply
             // owner supply

@@ -45,10 +45,7 @@ contract('WasderToken - Transfer and call', function(accounts) {
             });
  
             let logs_OnTokenTransferReceived = await this.receiverToken.getPastEvents( 'OnTokenTransferReceived', { fromBlock: 0, toBlock: 'latest' } )
-            //console.log(logs_OnTokenTransferReceived[0].args);
-            //console.log(logs_OnTokenTransferReceived[0].args._sender);
             //console.log(logs_OnTokenTransferReceived[0].args._value);
-            //console.log(logs_OnTokenTransferReceived[0].args._data);
             assert.equal(logs_OnTokenTransferReceived[0].args._sender, owner);
             assert.equal(logs_OnTokenTransferReceived[0].args._data, '0x00');
 
