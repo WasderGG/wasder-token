@@ -11,7 +11,7 @@ contract('WasderToken - BurnableToken', function(accounts) {
     const tokensToBurn = "100" + decimals_string_18dec;
 
     beforeEach(async function () {
-        this.token = await WasderToken.new();
+        this.token = await WasderToken.new(owner);
     });
 
     

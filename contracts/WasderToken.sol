@@ -17,12 +17,12 @@ contract WasderToken is ERC20Snapshot, AccessControl, EIP712Base {
 
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
 
-    constructor() ERC20("Wasder Token", "WAS") {
-        _mint(msg.sender, 1000000000 * 10**18 ); //1,000,000,000 tokens
+    constructor(address to) ERC20("Wasder Token", "WAS") {
+        _mint(to, 1000000000 * 10**18 ); //1,000,000,000 tokens
 
         _initializeEIP712("Wasder Token"); // domain
 
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _setupRole(DEFAULT_ADMIN_ROLE, to);
 
     }
 

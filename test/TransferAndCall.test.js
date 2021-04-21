@@ -14,7 +14,7 @@ contract('WasderToken - Transfer and call', function(accounts) {
     const [ owner, mintToAccount, ...otherAccounts ] = accounts;
     const amountInTokens = "100"+decimals_string_18dec;
     beforeEach(async function () {
-        this.token = await WasderToken.new();
+        this.token = await WasderToken.new(owner);
         this.receiverToken = await ERC677Mock.new("Receiver token", "RTT", owner, "1000000000"+decimals_string_18dec);
 
     });
