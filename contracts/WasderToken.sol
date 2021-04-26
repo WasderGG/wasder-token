@@ -27,11 +27,16 @@ contract WasderToken is ERC20Snapshot, AccessControl, EIP712Base {
     }
 
     function burn(uint256 amount) public {
-        require(hasRole(BURNER_ROLE, msg.sender), "Caller is not a burner");
-
+        require(hasRole(BURNER_ROLE, _msgSender()), "Caller is not a burner");
+        
         _burn(msg.sender, amount);
     }
 
+    function snapshot() public {
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Caller is not a admin");
+
+        _snapshot();
+    }
 
     // ERC677 Transfer and call
     event Transfer(address indexed from, address indexed to, uint256 value, bytes data);
