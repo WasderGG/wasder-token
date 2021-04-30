@@ -15,10 +15,12 @@ import "./ERC677/IERC677Receiver.sol";
 // - ERC677 - transfer and call - approve tokens and call a function on another contract in one transaction
 contract WasderToken is ERC20Snapshot, AccessControl, EIP712Base {
 
+    uint256 public constant INITIAL_SUPPLY = 1000000000 * 10**18; //1,000,000,000 tokens (18 decimals)
+
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
 
     constructor(address to) ERC20("Wasder Token", "WAS") {
-        _mint(to, 1000000000 * 10**18 ); //1,000,000,000 tokens
+        _mint(to, INITIAL_SUPPLY); 
 
         _initializeEIP712("Wasder Token"); // domain
 
@@ -26,13 +28,14 @@ contract WasderToken is ERC20Snapshot, AccessControl, EIP712Base {
 
     }
 
-    function burn(uint256 amount) public {
+    function burn(uint256 amount) external {
         require(hasRole(BURNER_ROLE, _msgSender()), "Caller is not a burner");
-        
+        require(amount > 0, "Amount to burn cannot be zero");
+
         _burn(msg.sender, amount);
     }
 
-    function snapshot() public {
+    function snapshot() external {
         require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Caller is not a admin");
 
         _snapshot();
@@ -48,7 +51,7 @@ contract WasderToken is ERC20Snapshot, AccessControl, EIP712Base {
     * @param _data The extra data to be passed to the receiving contract.
     */
     function transferAndCall(address _to, uint _value, bytes memory _data)
-        public
+        external
         returns (bool success)
     {
         super.transfer(_to, _value);

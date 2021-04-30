@@ -43,7 +43,7 @@ contract('WasderToken - Transfer and call', function(accounts) {
                 from: owner,
                 to: this.receiverToken.address,
             });
- 
+            
             let logs_OnTokenTransferReceived = await this.receiverToken.getPastEvents( 'OnTokenTransferReceived', { fromBlock: 0, toBlock: 'latest' } )
             //console.log(logs_OnTokenTransferReceived[0].args._value);
             assert.equal(logs_OnTokenTransferReceived[0].args._sender, owner);
